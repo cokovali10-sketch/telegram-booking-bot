@@ -1,28 +1,87 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="e340eeef-f46f-4eda-a359-dad67e88935d" name="Changes" comment="" />
+    <list default="true" id="e340eeef-f46f-4eda-a359-dad67e88935d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.env.example" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/BookingBot.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/config/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/config/settings.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/database/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/database/database.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/database/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/database/requests.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/handlers/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/handlers/admin.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/handlers/booking.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/handlers/start.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/keyboards/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/keyboards/inline.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/keyboards/main_menu.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/keyboards/reply.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/keyboards/services.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/services/calendar_service.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/states/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/states/booking.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/states/booking_states.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bot.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_D:/PortfolioProjects/BookingBot" value="3GtYwTpFDbFCssGYJG7AzGonlzn" />
+    </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="3GtYwTpFDbFCssGYJG7AzGonlzn" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Python.booking.executor": "Run",
+    "Python.bot.executor": "Run",
+    "Python.start.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master"
+    "git-widget-placeholder": "master",
+    "last_opened_file_path": "D:/PortfolioProjects/continue-intellij-extension-1.0.67.zip",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
   <component name="SharedIndexes">
@@ -42,5 +101,13 @@
       <updated>1784792570741</updated>
     </task>
     <servers />
+  </component>
+  <component name="github-copilot-workspace">
+    <instructionFileLocations>
+      <option value=".github/instructions" />
+    </instructionFileLocations>
+    <promptFileLocations>
+      <option value=".github/prompts" />
+    </promptFileLocations>
   </component>
 </project>
