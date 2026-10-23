@@ -13,6 +13,9 @@ from app.database.session import get_session
 from app.database.models import Master, Service
 from app.keyboards import inline
 from app.services import calendar_service
+# --- константы вынесены FORGE refactor ---
+CONST_3 = 3
+
 
 logger = logging.getLogger(__name__)
 
@@ -169,7 +172,7 @@ async def master_selected(callback: CallbackQuery, state: FSMContext) -> None:
 @router.callback_query(F.data.startswith("cal_nav_"))
 async def calendar_navigation(callback: CallbackQuery) -> None:
     parts = callback.data.split("_")
-    year, month = int(parts[2]), int(parts[3])
+    year, month = int(parts[2]), int(parts[CONST_3])
 
     await callback.message.edit_reply_markup(
         reply_markup=calendar_service.generate_calendar_keyboard(year, month)
@@ -181,7 +184,7 @@ async def calendar_navigation(callback: CallbackQuery) -> None:
 async def date_selected(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
     parts = callback.data.split("_")
-    year, month, day = int(parts[2]), int(parts[3]), int(parts[4])
+    year, month, day = int(parts[2]), int(parts[CONST_3]), int(parts[4])
     formatted_date = f"{year:04d}-{month:02d}-{day:02d}"
 
     await state.update_data(booking_date=formatted_date)
@@ -375,7 +378,7 @@ async def save_booking(callback: CallbackQuery, state: FSMContext) -> None:
 
 @router.callback_query(F.data.startswith("cancel_user_booking_"))
 async def cancel_user_booking_callback(callback: CallbackQuery) -> None:
-    booking_id = int(callback.data.split("_")[3])
+    booking_id = int(callback.data.split("_")[CONST_3])
     async with get_session() as session:
         user = await db.get_user_by_tg_id(session, callback.from_user.id)
         if user:

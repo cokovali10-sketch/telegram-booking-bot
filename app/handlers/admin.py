@@ -14,6 +14,9 @@ from app.database import requests as db
 from app.database.session import get_session
 from app.keyboards import inline
 from app.utils.formatters import master_to_manage_item, service_to_manage_item
+# --- константы вынесены FORGE refactor ---
+CONST_3 = 3
+
 
 logger = logging.getLogger(__name__)
 
@@ -358,7 +361,7 @@ async def toggle_service_status(callback: CallbackQuery) -> None:
         return
 
     parts = callback.data.split("_")
-    action, service_id = parts[2], int(parts[3])
+    action, service_id = parts[2], int(parts[CONST_3])
     is_active = action == "activate"
 
     async with get_session() as session:
@@ -395,7 +398,7 @@ async def toggle_master_status(callback: CallbackQuery) -> None:
         return
 
     parts = callback.data.split("_")
-    action, master_id = parts[2], int(parts[3])
+    action, master_id = parts[2], int(parts[CONST_3])
     is_active = action == "activate"
 
     async with get_session() as session:
@@ -416,7 +419,7 @@ async def change_booking_status(callback: CallbackQuery) -> None:
 
     parts = callback.data.split("_")
     booking_id = int(parts[2])
-    status = parts[3]
+    status = parts[CONST_3]
 
     async with get_session() as session:
         booking = await db.update_booking_status(session, booking_id, status)

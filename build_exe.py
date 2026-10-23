@@ -6,6 +6,9 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+# --- константы вынесены FORGE refactor ---
+CONST_1024 = 1024
+
 
 PROJECT_DIR = Path(__file__).resolve().parent
 APP_NAME = "telegram-bot"
@@ -79,7 +82,7 @@ def build(clean_first=False):
 
     exe = PROJECT_DIR / "dist" / f"{APP_NAME}.exe"
     if exe.exists():
-        size_mb = exe.stat().st_size / (1024 * 1024)
+        size_mb = exe.stat().st_size / (CONST_1024 * CONST_1024)
         print(f"[+] {exe}  ({size_mb:.1f} MB)")
     else:
         print(f"[!] Expected EXE not found: {exe}")

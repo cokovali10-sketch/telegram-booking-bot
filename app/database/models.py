@@ -14,6 +14,10 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+# --- константы вынесены FORGE refactor ---
+CONST_32 = 32
+CONST_255 = 255
+
 
 
 class Base(DeclarativeBase):
@@ -25,10 +29,10 @@ class User(Base):
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     tg_id: Mapped[int] = mapped_column(BigInteger, unique=True, nullable=False, index=True)
-    full_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    username: Mapped[str | None] = mapped_column(String(255), nullable=True)
-    phone: Mapped[str | None] = mapped_column(String(32), nullable=True)
-    role: Mapped[str] = mapped_column(String(32), default="user", nullable=False)
+    full_name: Mapped[str] = mapped_column(String(CONST_255), nullable=False)
+    username: Mapped[str | None] = mapped_column(String(CONST_255), nullable=True)
+    phone: Mapped[str | None] = mapped_column(String(CONST_32), nullable=True)
+    role: Mapped[str] = mapped_column(String(CONST_32), default="user", nullable=False)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         server_default=func.now(),
@@ -43,7 +47,7 @@ class Category(Base):
     __tablename__ = "categories"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    title: Mapped[str] = mapped_column(String(CONST_255), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
@@ -58,7 +62,7 @@ class Service(Base):
         ForeignKey("categories.id", ondelete="SET NULL"),
         nullable=True,
     )
-    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    title: Mapped[str] = mapped_column(String(CONST_255), nullable=False)
     description: Mapped[str | None] = mapped_column(Text, nullable=True)
     price: Mapped[int] = mapped_column(Integer, nullable=False)
     duration_min: Mapped[int] = mapped_column(Integer, nullable=False)
@@ -72,9 +76,9 @@ class Master(Base):
     __tablename__ = "masters"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
-    full_name: Mapped[str] = mapped_column(String(255), nullable=False)
-    phone: Mapped[str | None] = mapped_column(String(32), nullable=True)
-    specialization: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    full_name: Mapped[str] = mapped_column(String(CONST_255), nullable=False)
+    phone: Mapped[str | None] = mapped_column(String(CONST_32), nullable=True)
+    specialization: Mapped[str | None] = mapped_column(String(CONST_255), nullable=True)
     bio: Mapped[str | None] = mapped_column(Text, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
 
@@ -124,7 +128,7 @@ class Booking(Base):
     booking_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     original_price: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     final_price: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    status: Mapped[str] = mapped_column(String(32), default="pending", nullable=False)  # pending, confirmed, completed, cancelled
+    status: Mapped[str] = mapped_column(String(CONST_32), default="pending", nullable=False)  # pending, confirmed, completed, cancelled
     comment: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

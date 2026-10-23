@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import TypedDict
 
-from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
