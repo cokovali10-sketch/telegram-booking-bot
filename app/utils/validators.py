@@ -4,6 +4,9 @@ import re
 from datetime import date, datetime, timezone
 
 from app.utils.exceptions import ValidationError
+# --- константы вынесены FORGE refactor ---
+CONST_11 = 11
+
 
 PHONE_PATTERN = re.compile(r"^\+?[0-9]{10,15}$")
 TIME_PATTERN = re.compile(r"^([01]\d|2[0-3]):([0-5]\d)$")
@@ -11,9 +14,9 @@ TIME_PATTERN = re.compile(r"^([01]\d|2[0-3]):([0-5]\d)$")
 
 def normalize_phone(raw_phone: str) -> str:
     cleaned = re.sub(r"[\s\-()]", "", raw_phone.strip())
-    if cleaned.startswith("8") and len(cleaned) == 11:
+    if cleaned.startswith("8") and len(cleaned) == CONST_11:
         cleaned = f"+7{cleaned[1:]}"
-    if cleaned.isdigit() and len(cleaned) == 11 and cleaned.startswith("7"):
+    if cleaned.isdigit() and len(cleaned) == CONST_11 and cleaned.startswith("7"):
         cleaned = f"+{cleaned}"
     return cleaned
 

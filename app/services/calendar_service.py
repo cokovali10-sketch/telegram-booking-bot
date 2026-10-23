@@ -1,12 +1,16 @@
 import calendar
-from datetime import datetime, timedelta
+from datetime import datetime
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+# --- константы вынесены FORGE refactor ---
+CONST_9 = 9
+CONST_12 = 12
+
 
 MONTHS_RU = {
     1: "Январь", 2: "Февраль", 3: "Март", 4: "Апрель",
     5: "Май", 6: "Июнь", 7: "Июль", 8: "Август",
-    9: "Сентябрь", 10: "Октябрь", 11: "Ноябрь", 12: "Декабрь"
+    CONST_9: "Сентябрь", 10: "Октябрь", 11: "Ноябрь", CONST_12: "Декабрь"
 }
 
 
@@ -49,10 +53,10 @@ def generate_calendar_keyboard(year: int = None, month: int = None) -> InlineKey
 
     # Навигация (Предыдущий / Следующий месяц)
     nav_buttons = []
-    prev_month = month - 1 if month > 1 else 12
+    prev_month = month - 1 if month > 1 else CONST_12
     prev_year = year if month > 1 else year - 1
-    next_month = month + 1 if month < 12 else 1
-    next_year = year if month < 12 else year + 1
+    next_month = month + 1 if month < CONST_12 else 1
+    next_year = year if month < CONST_12 else year + 1
 
     # Запрещаем отматывать календарь в прошлые месяцы
     if datetime(year, month, 1).date() > datetime(now.year, now.month, 1).date():
@@ -74,7 +78,7 @@ def generate_time_slots_keyboard(busy_slots: list) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
 
     # Стандартные временные слоты с 09:00 до 18:00
-    all_slots = [f"{hour:02d}:00" for hour in range(9, 19)]
+    all_slots = [f"{hour:02d}:00" for hour in range(CONST_9, 19)]
 
     for slot in all_slots:
         if slot in busy_slots:
