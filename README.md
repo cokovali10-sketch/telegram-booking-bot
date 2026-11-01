@@ -1,5 +1,11 @@
 <div align="center">
 
+<img src="https://capsule-render.vercel.app/api?type=waving&color=0:0f172a,50:38bdf8,100:a78bfa&height=160&section=header&text=telegram-booking-bot&fontSize=48&fontColor=ffffff&fontAlignY=38&animation=fadeIn" alt="header" />
+
+</div>
+
+<div align="center">
+
 # Telegram Booking Bot
 
 **A production-ready Telegram bot for service businesses — salons, clinics, workshops, and more.**
