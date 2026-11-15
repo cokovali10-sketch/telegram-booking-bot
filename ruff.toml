@@ -1,0 +1,14 @@
+target-version = "py311"
+line-length = 100
+
+[lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = [
+    "E501",   # line length is handled by the formatter
+    "B904",   # exception chaining is not used consistently here
+    "SIM102", # nested ifs read better than compound conditions here
+    "SIM105", # try/except/pass guards optional side effects here
+]
+
+[lint.isort]
+known-first-party = ["app"]

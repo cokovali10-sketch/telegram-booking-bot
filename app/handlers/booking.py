@@ -5,14 +5,21 @@ import logging
 from aiogram import F, Router
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup
-from aiogram.types import CallbackQuery, KeyboardButton, Message, ReplyKeyboardMarkup, ReplyKeyboardRemove
+from aiogram.types import (
+    CallbackQuery,
+    KeyboardButton,
+    Message,
+    ReplyKeyboardMarkup,
+    ReplyKeyboardRemove,
+)
 
 from app.config.settings import settings
 from app.database import requests as db
-from app.database.session import get_session
 from app.database.models import Master, Service
+from app.database.session import get_session
 from app.keyboards import inline
 from app.services import calendar_service
+
 # --- константы вынесены FORGE refactor ---
 CONST_3 = 3
 
@@ -272,14 +279,19 @@ async def process_promo_code(message: Message, state: FSMContext) -> None:
         return
 
     await state.update_data(promo_code_id=promo.id, discount_percent=promo.discount_percent)
-    await message.answer(f"🎉 Промокод <b>{promo.code}</b> применен! Скидка {promo.discount_percent}%.", parse_mode="HTML")
+    await message.answer(
+        f"🎉 Промокод <b>{promo.code}</b> применен! Скидка {promo.discount_percent}%.",
+        parse_mode="HTML",
+    )
     await show_confirmation(message, state)
 
 
 @router.callback_query(BookingStates.confirm, F.data == "add_comment")
 async def start_add_comment(callback: CallbackQuery, state: FSMContext) -> None:
     await state.set_state(BookingStates.input_comment)
-    await callback.message.edit_text("<b>💬 Введите комментарий или пожелание к записи:</b>", parse_mode="HTML")
+    await callback.message.edit_text(
+        "<b>💬 Введите комментарий или пожелание к записи:</b>", parse_mode="HTML"
+    )
     await callback.answer()
 
 
@@ -304,7 +316,11 @@ async def show_confirmation(message: Message, state: FSMContext) -> None:
 
     original_price = service.price
     discount_percent = data.get("discount_percent", 0)
-    final_price = original_price - (original_price * discount_percent // 100) if discount_percent else original_price
+    final_price = (
+        original_price - (original_price * discount_percent // 100)
+        if discount_percent
+        else original_price
+    )
 
     price_text = f"{final_price} ₸"
     if discount_percent:
@@ -325,7 +341,11 @@ async def show_confirmation(message: Message, state: FSMContext) -> None:
 
     await state.set_state(BookingStates.confirm)
     has_promo = "promo_code_id" in data
-    await message.answer(text, reply_markup=inline.confirm_booking_keyboard(has_promo=has_promo), parse_mode="HTML")
+    await message.answer(
+        text,
+        reply_markup=inline.confirm_booking_keyboard(has_promo=has_promo),
+        parse_mode="HTML",
+    )
 
 
 @router.callback_query(BookingStates.confirm, F.data == "confirm_booking")
@@ -359,14 +379,18 @@ async def save_booking(callback: CallbackQuery, state: FSMContext) -> None:
     await callback.answer()
 
     # Notify Admins
+    async with get_session() as session:
+        service = await db.get_service_by_id(session, data["service_id"])
+    service_title = service.title if service else ""
+
     for admin_id in settings.ADMIN_IDS:
         try:
             await callback.bot.send_message(
                 admin_id,
-                f"🚨 <b>Новая запись #{booking_id}!</b>\n\n"
-                f"👤 Клиент: {callback.from_user.full_name}\n"
-                f"📅 Дата: {data['booking_date']} в {data['booking_time']}\n"
-                f"🛠 Услуга: {service.title if 'service' in locals() else ''}",
+                f"рџљЁ <b>РќРѕРІР°СЏ Р·Р°РїРёСЃСЊ #{booking_id}!</b>\n\n"
+                f"рџ‘¤ РљР»РёРµРЅС‚: {callback.from_user.full_name}\n"
+                f"рџ“… Р”Р°С‚Р°: {data['booking_date']} РІ {data['booking_time']}\n"
+                f"рџ›  РЈСЃР»СѓРіР°: {service_title}",
                 parse_mode="HTML",
                 reply_markup=inline.admin_booking_action_keyboard(booking_id),
             )
@@ -375,6 +399,7 @@ async def save_booking(callback: CallbackQuery, state: FSMContext) -> None:
 
 
 # --- Cancel & Reschedule ---
+
 
 @router.callback_query(F.data.startswith("cancel_user_booking_"))
 async def cancel_user_booking_callback(callback: CallbackQuery) -> None:

@@ -8,7 +8,15 @@ from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from app.database.models import Booking, Category, Master, PromoCode, Review, Service, User
+from app.database.models import (
+    Booking,
+    Category,
+    Master,
+    PromoCode,
+    Review,
+    Service,
+    User,
+)
 from app.utils.exceptions import DatabaseError, NotFoundError, ValidationError
 from app.utils.validators import validate_booking_datetime
 
@@ -83,6 +91,7 @@ async def update_user_name(session: AsyncSession, tg_id: int, full_name: str) ->
 
 # --- Categories ---
 
+
 async def get_categories(session: AsyncSession) -> list[Category]:
     result = await session.execute(
         select(Category).where(Category.is_active.is_(True)).order_by(Category.id)
@@ -90,7 +99,9 @@ async def get_categories(session: AsyncSession) -> list[Category]:
     return list(result.scalars().all())
 
 
-async def create_category(session: AsyncSession, title: str, description: str | None = None) -> Category:
+async def create_category(
+    session: AsyncSession, title: str, description: str | None = None
+) -> Category:
     cat = Category(title=title, description=description)
     session.add(cat)
     await session.flush()
@@ -99,7 +110,10 @@ async def create_category(session: AsyncSession, title: str, description: str | 
 
 # --- Services ---
 
-async def get_active_services(session: AsyncSession, category_id: int | None = None) -> list[Service]:
+
+async def get_active_services(
+    session: AsyncSession, category_id: int | None = None
+) -> list[Service]:
     stmt = select(Service).where(Service.is_active.is_(True))
     if category_id is not None:
         stmt = stmt.where(Service.category_id == category_id)
@@ -151,6 +165,7 @@ async def set_service_active(session: AsyncSession, service_id: int, is_active: 
 
 # --- Masters ---
 
+
 async def get_active_masters(session: AsyncSession) -> list[Master]:
     result = await session.execute(
         select(Master).where(Master.is_active.is_(True)).order_by(Master.id)
@@ -199,6 +214,7 @@ async def set_master_active(session: AsyncSession, master_id: int, is_active: bo
 
 # --- Promo Codes ---
 
+
 async def get_promo_code(session: AsyncSession, code: str) -> PromoCode | None:
     result = await session.execute(
         select(PromoCode).where(
@@ -235,6 +251,7 @@ async def get_all_promo_codes(session: AsyncSession) -> list[PromoCode]:
 
 # --- Bookings & Slots ---
 
+
 async def get_busy_slots(session: AsyncSession, master_id: int, date_str: str) -> list[str]:
     target_date = date.fromisoformat(date_str)
     result = await session.execute(
@@ -251,7 +268,10 @@ async def get_busy_slots(session: AsyncSession, master_id: int, date_str: str) -
 
 
 async def is_slot_available(
-    session: AsyncSession, master_id: int, booking_time: datetime, exclude_booking_id: int | None = None
+    session: AsyncSession,
+    master_id: int,
+    booking_time: datetime,
+    exclude_booking_id: int | None = None,
 ) -> bool:
     stmt = select(func.count(Booking.id)).where(
         Booking.master_id == master_id,
@@ -407,7 +427,9 @@ async def reschedule_booking(
     if booking is None:
         raise NotFoundError("Booking not found", user_message="❌ Запись не найдена.")
 
-    if not await is_slot_available(session, booking.master_id, new_booking_time, exclude_booking_id=booking_id):
+    if not await is_slot_available(
+        session, booking.master_id, new_booking_time, exclude_booking_id=booking_id
+    ):
         raise ValidationError(
             "Slot unavailable",
             user_message="❌ Выбранный слот уже занят. Выберите другое время.",
@@ -438,8 +460,13 @@ async def cancel_user_booking(session: AsyncSession, booking_id: int, user_id: i
 
 # --- Reviews ---
 
+
 async def create_review(
-    session: AsyncSession, booking_id: int, user_id: int, rating: int, comment: str | None = None
+    session: AsyncSession,
+    booking_id: int,
+    user_id: int,
+    rating: int,
+    comment: str | None = None,
 ) -> Review:
     booking = await get_booking_by_id(session, booking_id)
     if not booking or booking.user_id != user_id:
@@ -483,14 +510,28 @@ async def get_master_rating(session: AsyncSession, master_id: int) -> tuple[floa
 
 # --- Stats ---
 
+
 async def get_booking_stats(session: AsyncSession) -> BookingStats:
     total = await session.scalar(select(func.count(Booking.id))) or 0
-    pending = await session.scalar(select(func.count(Booking.id)).where(Booking.status == "pending")) or 0
-    confirmed = await session.scalar(select(func.count(Booking.id)).where(Booking.status == "confirmed")) or 0
-    completed = await session.scalar(select(func.count(Booking.id)).where(Booking.status == "completed")) or 0
-    cancelled = await session.scalar(select(func.count(Booking.id)).where(Booking.status == "cancelled")) or 0
+    pending = (
+        await session.scalar(select(func.count(Booking.id)).where(Booking.status == "pending")) or 0
+    )
+    confirmed = (
+        await session.scalar(select(func.count(Booking.id)).where(Booking.status == "confirmed"))
+        or 0
+    )
+    completed = (
+        await session.scalar(select(func.count(Booking.id)).where(Booking.status == "completed"))
+        or 0
+    )
+    cancelled = (
+        await session.scalar(select(func.count(Booking.id)).where(Booking.status == "cancelled"))
+        or 0
+    )
 
-    revenue_stmt = select(func.sum(Booking.final_price)).where(Booking.status.in_(("confirmed", "completed")))
+    revenue_stmt = select(func.sum(Booking.final_price)).where(
+        Booking.status.in_(("confirmed", "completed"))
+    )
     total_revenue = await session.scalar(revenue_stmt) or 0
 
     return BookingStats(
@@ -509,12 +550,20 @@ def parse_booking_datetime(date_str: str, time_str: str) -> datetime:
 
 # --- Seed Data ---
 
+
 async def seed_initial_data(session: AsyncSession) -> None:
     categories_count = await session.scalar(select(func.count(Category.id))) or 0
     if categories_count == 0:
-        cat_hair = Category(title="💇‍♂️ Стрижка и Укладка", description="Мужские и женские стрижки, модельные укладки")
-        cat_care = Category(title="💆‍♀️ Спа и Уход", description="Расслабляющий уход за кожей и волосами")
-        cat_consult = Category(title="💬 Консультации", description="Индивидуальный подбор стиля и ухода")
+        cat_hair = Category(
+            title="💇‍♂️ Стрижка и Укладка",
+            description="Мужские и женские стрижки, модельные укладки",
+        )
+        cat_care = Category(
+            title="💆‍♀️ Спа и Уход", description="Расслабляющий уход за кожей и волосами"
+        )
+        cat_consult = Category(
+            title="💬 Консультации", description="Индивидуальный подбор стиля и ухода"
+        )
         session.add_all([cat_hair, cat_care, cat_consult])
         await session.flush()
 

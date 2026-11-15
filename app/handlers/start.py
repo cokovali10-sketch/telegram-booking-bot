@@ -12,7 +12,11 @@ from app.database import requests as db
 from app.database.session import get_session
 from app.keyboards import inline
 from app.keyboards.reply import main_reply_keyboard
-from app.utils.formatters import booking_to_keyboard_item, format_booking_card, format_user_profile
+from app.utils.formatters import (
+    booking_to_keyboard_item,
+    format_booking_card,
+    format_user_profile,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -110,7 +114,8 @@ async def process_edit_name(message: Message, state: FSMContext) -> None:
 async def start_edit_phone(callback: CallbackQuery, state: FSMContext) -> None:
     await state.set_state(UserStates.edit_phone)
     await callback.message.edit_text(
-        "<b>📱 Введите ваш новый номер телефона (например, +77001234567):</b>", parse_mode="HTML"
+        "<b>📱 Введите ваш новый номер телефона (например, +77001234567):</b>",
+        parse_mode="HTML",
     )
     await callback.answer()
 
@@ -156,7 +161,9 @@ async def my_bookings_handler(event: Message | CallbackQuery) -> None:
     if isinstance(event, Message):
         await event.answer(text, reply_markup=inline.my_bookings_keyboard(items), parse_mode="HTML")
     else:
-        await event.message.edit_text(text, reply_markup=inline.my_bookings_keyboard(items), parse_mode="HTML")
+        await event.message.edit_text(
+            text, reply_markup=inline.my_bookings_keyboard(items), parse_mode="HTML"
+        )
         await event.answer()
 
 
@@ -270,7 +277,10 @@ async def process_review_comment(message: Message, state: FSMContext) -> None:
             )
 
     await state.clear()
-    await message.answer("🎉 <b>Спасибо за ваш отзыв!</b>\nМы очень ценим ваше мнение.", parse_mode="HTML")
+    await message.answer(
+        "🎉 <b>Спасибо за ваш отзыв!</b>\nМы очень ценим ваше мнение.",
+        parse_mode="HTML",
+    )
 
 
 @router.message(F.text == "📞 Контакты")

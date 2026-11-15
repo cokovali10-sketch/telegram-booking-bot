@@ -1,16 +1,27 @@
 import calendar
 from datetime import datetime
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+
+from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
 # --- константы вынесены FORGE refactor ---
 CONST_9 = 9
 CONST_12 = 12
 
 
 MONTHS_RU = {
-    1: "Январь", 2: "Февраль", 3: "Март", 4: "Апрель",
-    5: "Май", 6: "Июнь", 7: "Июль", 8: "Август",
-    CONST_9: "Сентябрь", 10: "Октябрь", 11: "Ноябрь", CONST_12: "Декабрь"
+    1: "Январь",
+    2: "Февраль",
+    3: "Март",
+    4: "Апрель",
+    5: "Май",
+    6: "Июнь",
+    7: "Июль",
+    8: "Август",
+    CONST_9: "Сентябрь",
+    10: "Октябрь",
+    11: "Ноябрь",
+    CONST_12: "Декабрь",
 }
 
 
@@ -23,10 +34,7 @@ def generate_calendar_keyboard(year: int = None, month: int = None) -> InlineKey
     builder = InlineKeyboardBuilder()
 
     # Шапка: Месяц и Год
-    builder.row(InlineKeyboardButton(
-        text=f"🗓 {MONTHS_RU[month]} {year}",
-        callback_data="ignore"
-    ))
+    builder.row(InlineKeyboardButton(text=f"🗓 {MONTHS_RU[month]} {year}", callback_data="ignore"))
 
     # Дни недели
     days_of_week = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
@@ -45,10 +53,12 @@ def generate_calendar_keyboard(year: int = None, month: int = None) -> InlineKey
                 if date_obj < now.date():
                     row.append(InlineKeyboardButton(text="❌", callback_data="ignore"))
                 else:
-                    row.append(InlineKeyboardButton(
-                        text=str(day),
-                        callback_data=f"cal_date_{year}_{month}_{day}"
-                    ))
+                    row.append(
+                        InlineKeyboardButton(
+                            text=str(day),
+                            callback_data=f"cal_date_{year}_{month}_{day}",
+                        )
+                    )
         builder.row(*row)
 
     # Навигация (Предыдущий / Следующий месяц)
@@ -60,11 +70,15 @@ def generate_calendar_keyboard(year: int = None, month: int = None) -> InlineKey
 
     # Запрещаем отматывать календарь в прошлые месяцы
     if datetime(year, month, 1).date() > datetime(now.year, now.month, 1).date():
-        nav_buttons.append(InlineKeyboardButton(text="◀️", callback_data=f"cal_nav_{prev_year}_{prev_month}"))
+        nav_buttons.append(
+            InlineKeyboardButton(text="◀️", callback_data=f"cal_nav_{prev_year}_{prev_month}")
+        )
     else:
         nav_buttons.append(InlineKeyboardButton(text="⛔", callback_data="ignore"))
 
-    nav_buttons.append(InlineKeyboardButton(text="▶️", callback_data=f"cal_nav_{next_year}_{next_month}"))
+    nav_buttons.append(
+        InlineKeyboardButton(text="▶️", callback_data=f"cal_nav_{next_year}_{next_month}")
+    )
     builder.row(*nav_buttons)
 
     # Кнопка отмены

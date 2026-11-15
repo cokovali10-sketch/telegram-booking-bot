@@ -14,6 +14,7 @@ from app.database import requests as db
 from app.database.session import get_session
 from app.keyboards import inline
 from app.utils.formatters import master_to_manage_item, service_to_manage_item
+
 # --- константы вынесены FORGE refactor ---
 CONST_3 = 3
 
@@ -124,7 +125,9 @@ async def view_admin_stats(callback: CallbackQuery) -> None:
         f"❌ <b>Отменено:</b> {stats['cancelled']}\n\n"
         f"💰 <b>Ориентировочная выручка:</b> {stats['total_revenue']:,} ₸"
     )
-    await callback.message.edit_text(text, reply_markup=inline.admin_back_keyboard(), parse_mode="HTML")
+    await callback.message.edit_text(
+        text, reply_markup=inline.admin_back_keyboard(), parse_mode="HTML"
+    )
     await callback.answer()
 
 
@@ -165,6 +168,7 @@ async def export_bookings_csv(callback: CallbackQuery) -> None:
 
 
 # --- Add Service ---
+
 
 @router.callback_query(F.data == "admin_add_service")
 async def start_add_service(callback: CallbackQuery, state: FSMContext) -> None:
@@ -212,6 +216,7 @@ async def process_service_price(message: Message, state: FSMContext) -> None:
 
 # --- Add Master ---
 
+
 @router.callback_query(F.data == "admin_add_master")
 async def start_add_master(callback: CallbackQuery, state: FSMContext) -> None:
     if not is_admin(callback.from_user.id):
@@ -253,6 +258,7 @@ async def process_master_spec(message: Message, state: FSMContext) -> None:
 
 
 # --- Add Promo Code ---
+
 
 @router.callback_query(F.data == "admin_add_promo")
 async def start_add_promo(callback: CallbackQuery, state: FSMContext) -> None:
@@ -296,6 +302,7 @@ async def process_promo_discount(message: Message, state: FSMContext) -> None:
 
 # --- Broadcast ---
 
+
 @router.callback_query(F.data == "admin_broadcast")
 async def start_broadcast(callback: CallbackQuery, state: FSMContext) -> None:
     if not is_admin(callback.from_user.id):
@@ -321,22 +328,25 @@ async def process_broadcast(message: Message, state: FSMContext) -> None:
     failed = 0
     for u in users:
         try:
-            await message.bot.send_message(u.tg_id, f"📢 <b>Сообщение от администрации:</b>\n\n{text}", parse_mode="HTML")
+            await message.bot.send_message(
+                u.tg_id,
+                f"📢 <b>Сообщение от администрации:</b>\n\n{text}",
+                parse_mode="HTML",
+            )
             sent += 1
         except Exception:
             failed += 1
 
     await state.clear()
     await message.answer(
-        f"🎉 <b>Рассылка завершена!</b>\n\n"
-        f"✅ Успешно доставлено: {sent}\n"
-        f"❌ Ошибок: {failed}",
+        f"🎉 <b>Рассылка завершена!</b>\n\n✅ Успешно доставлено: {sent}\n❌ Ошибок: {failed}",
         reply_markup=inline.admin_keyboard(),
         parse_mode="HTML",
     )
 
 
 # --- Service / Master Management ---
+
 
 @router.callback_query(F.data == "admin_manage_services")
 async def manage_services_list(callback: CallbackQuery) -> None:

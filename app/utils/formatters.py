@@ -52,7 +52,13 @@ def booking_to_keyboard_item(booking: Booking) -> BookingKeyboardItem:
 
 def format_booking_card(booking: Booking) -> str:
     service_title = booking.service.title if booking.service else "—"
-    service_price = f"{booking.final_price} ₸" if booking.final_price else f"{booking.service.price} ₸" if booking.service else "—"
+    service_price = (
+        f"{booking.final_price} ₸"
+        if booking.final_price
+        else f"{booking.service.price} ₸"
+        if booking.service
+        else "—"
+    )
     master_name = booking.master.full_name if booking.master else "—"
     user_name = booking.user.full_name if booking.user else "—"
     user_phone = booking.user.phone if booking.user and booking.user.phone else "—"
@@ -65,7 +71,9 @@ def format_booking_card(booking: Booking) -> str:
     }
     status_str = status_map.get(booking.status, booking.status)
 
-    promo_str = f"🏷 Скидка применилась (Итого: {booking.final_price} ₸)\n" if booking.promo_code_id else ""
+    promo_str = (
+        f"🏷 Скидка применилась (Итого: {booking.final_price} ₸)\n" if booking.promo_code_id else ""
+    )
     comment_str = f"💬 Комментарий: {booking.comment}\n" if booking.comment else ""
 
     return (

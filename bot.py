@@ -7,17 +7,16 @@ from aiogram.enums import ParseMode
 
 from app.config.settings import settings
 from app.database.db import init_db
-
-from app.handlers.start import router as start_router
-from app.handlers.booking import router as booking_router
 from app.handlers.admin import router as admin_router
+from app.handlers.booking import router as booking_router
+from app.handlers.start import router as start_router
 from app.middlewares.errors import ErrorHandlerMiddleware
 
 
 async def main():
     logging.basicConfig(
         level=logging.INFO,
-        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s"
+        format="%(asctime)s | %(levelname)s | %(name)s | %(message)s",
     )
 
     # Инициализация структуры базы данных
@@ -26,9 +25,7 @@ async def main():
 
     bot = Bot(
         token=settings.BOT_TOKEN,
-        default=DefaultBotProperties(
-            parse_mode=ParseMode.HTML
-        )
+        default=DefaultBotProperties(parse_mode=ParseMode.HTML),
     )
 
     dp = Dispatcher()

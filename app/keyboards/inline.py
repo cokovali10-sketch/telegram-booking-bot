@@ -186,7 +186,9 @@ def admin_back_keyboard() -> InlineKeyboardMarkup:
     return builder.as_markup()
 
 
-def admin_services_manage_keyboard(services: list[ServiceManageItem]) -> InlineKeyboardMarkup:
+def admin_services_manage_keyboard(
+    services: list[ServiceManageItem],
+) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for service in services:
         status = "🟢" if service["is_active"] else "🔴"
@@ -200,7 +202,9 @@ def admin_services_manage_keyboard(services: list[ServiceManageItem]) -> InlineK
     return builder.as_markup()
 
 
-def admin_masters_manage_keyboard(masters: list[MasterManageItem]) -> InlineKeyboardMarkup:
+def admin_masters_manage_keyboard(
+    masters: list[MasterManageItem],
+) -> InlineKeyboardMarkup:
     builder = InlineKeyboardBuilder()
     for master in masters:
         status = "🟢" if master["is_active"] else "🔴"

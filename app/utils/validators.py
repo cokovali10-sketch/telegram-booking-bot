@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 import re
-from datetime import date, datetime, timezone
+from datetime import UTC, date, datetime
 
 from app.utils.exceptions import ValidationError
+
 # --- константы вынесены FORGE refactor ---
 CONST_11 = 11
 
@@ -52,7 +53,7 @@ def validate_booking_date(date_str: str) -> date:
             user_message="❌ Неверная дата. Выберите дату в календаре.",
         ) from exc
 
-    if booking_date < datetime.now(timezone.utc).date():
+    if booking_date < datetime.now(UTC).date():
         raise ValidationError(
             f"Past date: {date_str}",
             user_message="❌ Нельзя записаться на прошедшую дату.",
@@ -70,9 +71,9 @@ def validate_booking_datetime(date_str: str, time_str: str) -> datetime:
         booking_date.day,
         hour,
         minute,
-        tzinfo=timezone.utc,
+        tzinfo=UTC,
     )
-    if booking_time <= datetime.now(timezone.utc):
+    if booking_time <= datetime.now(UTC):
         raise ValidationError(
             f"Past datetime: {date_str} {time_str}",
             user_message="❌ Нельзя записаться на прошедшее время.",

@@ -6,7 +6,6 @@ from sqlalchemy import (
     BigInteger,
     Boolean,
     DateTime,
-    Float,
     ForeignKey,
     Integer,
     String,
@@ -14,10 +13,10 @@ from sqlalchemy import (
     func,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
+
 # --- константы вынесены FORGE refactor ---
 CONST_32 = 32
 CONST_255 = 255
-
 
 
 class Base(DeclarativeBase):
@@ -39,8 +38,12 @@ class User(Base):
         nullable=False,
     )
 
-    bookings: Mapped[list[Booking]] = relationship(back_populates="user", cascade="all, delete-orphan")
-    reviews: Mapped[list[Review]] = relationship(back_populates="user", cascade="all, delete-orphan")
+    bookings: Mapped[list[Booking]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
+    reviews: Mapped[list[Review]] = relationship(
+        back_populates="user", cascade="all, delete-orphan"
+    )
 
 
 class Category(Base):
@@ -128,7 +131,9 @@ class Booking(Base):
     booking_time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     original_price: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     final_price: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
-    status: Mapped[str] = mapped_column(String(CONST_32), default="pending", nullable=False)  # pending, confirmed, completed, cancelled
+    status: Mapped[str] = mapped_column(
+        String(CONST_32), default="pending", nullable=False
+    )  # pending, confirmed, completed, cancelled
     comment: Mapped[str | None] = mapped_column(Text, nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
@@ -140,7 +145,9 @@ class Booking(Base):
     service: Mapped[Service] = relationship(back_populates="bookings")
     master: Mapped[Master] = relationship(back_populates="bookings")
     promo_code: Mapped[PromoCode | None] = relationship(back_populates="bookings")
-    review: Mapped[Review | None] = relationship(back_populates="booking", uselist=False, cascade="all, delete-orphan")
+    review: Mapped[Review | None] = relationship(
+        back_populates="booking", uselist=False, cascade="all, delete-orphan"
+    )
 
 
 class Review(Base):

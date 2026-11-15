@@ -6,6 +6,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+
 # --- константы вынесены FORGE refactor ---
 CONST_1024 = 1024
 
@@ -34,40 +35,73 @@ def build(clean_first=False):
         clean()
 
     cmd = [
-        sys.executable, "-m", "PyInstaller",
+        sys.executable,
+        "-m",
+        "PyInstaller",
         "--onefile",
-        "--name", APP_NAME,
+        "--name",
+        APP_NAME,
         "--console",
-        "--distpath", str(PROJECT_DIR / "dist"),
-        "--workpath", str(PROJECT_DIR / "build"),
-        "--specpath", str(PROJECT_DIR),
-        "--paths", str(PROJECT_DIR),
-        "--hidden-import", "app",
-        "--hidden-import", "app.config",
-        "--hidden-import", "app.config.settings",
-        "--hidden-import", "app.database",
-        "--hidden-import", "app.database.db",
-        "--hidden-import", "app.database.models",
-        "--hidden-import", "app.database.requests",
-        "--hidden-import", "app.database.session",
-        "--hidden-import", "app.handlers",
-        "--hidden-import", "app.handlers.admin",
-        "--hidden-import", "app.handlers.booking",
-        "--hidden-import", "app.handlers.start",
-        "--hidden-import", "app.keyboards",
-        "--hidden-import", "app.keyboards.inline",
-        "--hidden-import", "app.keyboards.main_menu",
-        "--hidden-import", "app.keyboards.reply",
-        "--hidden-import", "app.keyboards.services",
-        "--hidden-import", "app.middlewares",
-        "--hidden-import", "aiogram",
-        "--hidden-import", "aiogram.filters",
-        "--hidden-import", "aiogram.fsm.context",
-        "--hidden-import", "aiogram.fsm.storage.memory",
-        "--hidden-import", "aiogram.fsm.state",
-        "--hidden-import", "aiogram.types",
-        "--hidden-import", "aiogram.utils.keyboard",
-        "--collect-submodules", "app",
+        "--distpath",
+        str(PROJECT_DIR / "dist"),
+        "--workpath",
+        str(PROJECT_DIR / "build"),
+        "--specpath",
+        str(PROJECT_DIR),
+        "--paths",
+        str(PROJECT_DIR),
+        "--hidden-import",
+        "app",
+        "--hidden-import",
+        "app.config",
+        "--hidden-import",
+        "app.config.settings",
+        "--hidden-import",
+        "app.database",
+        "--hidden-import",
+        "app.database.db",
+        "--hidden-import",
+        "app.database.models",
+        "--hidden-import",
+        "app.database.requests",
+        "--hidden-import",
+        "app.database.session",
+        "--hidden-import",
+        "app.handlers",
+        "--hidden-import",
+        "app.handlers.admin",
+        "--hidden-import",
+        "app.handlers.booking",
+        "--hidden-import",
+        "app.handlers.start",
+        "--hidden-import",
+        "app.keyboards",
+        "--hidden-import",
+        "app.keyboards.inline",
+        "--hidden-import",
+        "app.keyboards.main_menu",
+        "--hidden-import",
+        "app.keyboards.reply",
+        "--hidden-import",
+        "app.keyboards.services",
+        "--hidden-import",
+        "app.middlewares",
+        "--hidden-import",
+        "aiogram",
+        "--hidden-import",
+        "aiogram.filters",
+        "--hidden-import",
+        "aiogram.fsm.context",
+        "--hidden-import",
+        "aiogram.fsm.storage.memory",
+        "--hidden-import",
+        "aiogram.fsm.state",
+        "--hidden-import",
+        "aiogram.types",
+        "--hidden-import",
+        "aiogram.utils.keyboard",
+        "--collect-submodules",
+        "app",
     ]
 
     if ICON_PATH.exists():
@@ -90,6 +124,8 @@ def build(clean_first=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=f"Build {APP_NAME}.exe")
-    parser.add_argument("--clean", action="store_true", help="Remove build artifacts first")
+    parser.add_argument(
+        "--clean", action="store_true", help="Remove build artifacts first"
+    )
     args = parser.parse_args()
     build(clean_first=args.clean)

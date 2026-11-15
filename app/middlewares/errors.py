@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, Awaitable, Callable
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 from aiogram import BaseMiddleware
 from aiogram.types import CallbackQuery, Message, TelegramObject
@@ -25,7 +26,7 @@ class ErrorHandlerMiddleware(BaseMiddleware):
             logger.warning("Application error: %s", exc)
             await self._send_user_message(event, exc.user_message)
             return None
-        except SQLAlchemyError as exc:
+        except SQLAlchemyError:
             logger.exception("Database error")
             await self._send_user_message(
                 event,
